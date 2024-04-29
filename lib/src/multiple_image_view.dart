@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:newsfeed_multiple_imageview/src/smart_image.dart';
+import 'package:newsfeed_multiple_imageview/src/thumbnail_image.dart';
 
 class MultipleImageView extends StatelessWidget {
   final List<String> imageUrls;
+  final int maxImages;
+  final double? radius = 20.0;
+
   const MultipleImageView({
-    Key? key,
+    super.key,
     required this.imageUrls,
-  }) : super(key: key);
+    required this.maxImages,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,8 @@ class MultipleImageView extends StatelessWidget {
 
       case 4:
         return _foureImageView();
-
+      // case 5:
+      //   return _fiveImageView();
       default:
         return _multipleImageView();
     }
@@ -41,13 +46,10 @@ class MultipleImageView extends StatelessWidget {
     return [
       Expanded(
         flex: 1,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: SmartImage(
-            imageUrls.first,
-            fit: BoxFit.cover,
-            isPost: true,
-          ),
+        child: ThumbnailImage(
+          imageUrls: imageUrls,
+          index: 0,
+          borderRadius: BorderRadius.all(Radius.circular(radius!)),
         ),
       ),
     ];
@@ -57,52 +59,42 @@ class MultipleImageView extends StatelessWidget {
     return [
       Expanded(
         flex: 1,
-        child: ClipRRect(
+        child: ThumbnailImage(
+          imageUrls: imageUrls,
+          index: imageUrls.indexOf(imageUrls.first),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),
             bottomLeft: Radius.circular(20),
-          ),
-          child: SmartImage(
-            imageUrls.first,
-            fit: BoxFit.cover,
-            isPost: true,
           ),
         ),
       ),
       const SizedBox(width: 5),
       Expanded(
         flex: 1,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-          child: SmartImage(
-            imageUrls.last,
-            fit: BoxFit.cover,
-            isPost: true,
+        child: ThumbnailImage(
+          imageUrls: imageUrls,
+          index: imageUrls.indexOf(imageUrls.last),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(radius!),
+            bottomRight: Radius.circular(radius!),
           ),
         ),
-      )
+      ),
     ];
   }
 
   List<Widget> _threeImageView() {
     return [
       Expanded(
-        flex: 1,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-          ),
-          child: SmartImage(
-            imageUrls[0],
-            fit: BoxFit.cover,
-            isPost: true,
-          ),
-        ),
-      ),
+          flex: 1,
+          child: ThumbnailImage(
+            imageUrls: imageUrls,
+            index: 0,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(radius!),
+              bottomLeft: Radius.circular(radius!),
+            ),
+          )),
       const SizedBox(width: 5),
       Expanded(
         flex: 1,
@@ -113,28 +105,22 @@ class MultipleImageView extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: ClipRRect(
+              child: ThumbnailImage(
+                imageUrls: imageUrls,
+                index: 1,
                 borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(20),
-                ),
-                child: SmartImage(
-                  imageUrls[1],
-                  fit: BoxFit.cover,
-                  isPost: true,
                 ),
               ),
             ),
             const SizedBox(height: 5),
             Expanded(
               flex: 1,
-              child: ClipRRect(
-                borderRadius:const BorderRadius.only(
-                  bottomRight: Radius.circular(20),
-                ),
-                child: SmartImage(
-                  imageUrls[2],
-                  fit: BoxFit.cover,
-                  isPost: true,
+              child: ThumbnailImage(
+                imageUrls: imageUrls,
+                index: 2,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(radius!),
                 ),
               ),
             ),
@@ -148,15 +134,12 @@ class MultipleImageView extends StatelessWidget {
     return [
       Expanded(
         flex: 2,
-        child: ClipRRect(
+        child: ThumbnailImage(
+          imageUrls: imageUrls,
+          index: 0,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-          ),
-          child: SmartImage(
-            imageUrls[0],
-            fit: BoxFit.cover,
-            isPost: true,
+            topLeft: Radius.circular(radius!),
+            bottomLeft: Radius.circular(radius!),
           ),
         ),
       ),
@@ -170,40 +153,25 @@ class MultipleImageView extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: ClipRRect(
-                borderRadius:const  BorderRadius.only(
-                  topRight: Radius.circular(20),
-                ),
-                child: SmartImage(
-                  imageUrls[1],
-                  fit: BoxFit.cover,
-                  isPost: true,
+              child: ThumbnailImage(
+                imageUrls: imageUrls,
+                index: 1,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(radius!),
                 ),
               ),
             ),
             const SizedBox(height: 5),
             Expanded(
-              flex: 1,
-              child: ClipRRect(
-                child: SmartImage(
-                  imageUrls[2],
-                  fit: BoxFit.cover,
-                  isPost: true,
-                ),
-              ),
-            ),
+                flex: 1, child: ThumbnailImage(imageUrls: imageUrls, index: 2)),
             const SizedBox(height: 5),
             Expanded(
               flex: 1,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(20),
-                ),
-                child: SmartImage(
-                  imageUrls[3],
-                  fit: BoxFit.cover,
-                  isPost: true,
-                ),
+              child: ThumbnailImage(
+                imageUrls: imageUrls,
+                index: 3,
+                borderRadius:
+                    BorderRadius.only(bottomRight: Radius.circular(radius!)),
               ),
             ),
           ],
@@ -215,17 +183,33 @@ class MultipleImageView extends StatelessWidget {
   List<Widget> _multipleImageView() {
     return [
       Expanded(
-        flex: 2,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-          ),
-          child: SmartImage(
-            imageUrls[0],
-            fit: BoxFit.cover,
-            isPost: true,
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 1,
+              child: ThumbnailImage(
+                imageUrls: imageUrls,
+                index: 0,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(radius!),
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+            Expanded(
+              flex: 1,
+              child: ThumbnailImage(
+                imageUrls: imageUrls,
+                index: 1,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(radius!),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       const SizedBox(width: 5),
@@ -238,26 +222,20 @@ class MultipleImageView extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(20),
-                ),
-                child: SmartImage(
-                  imageUrls[1],
-                  fit: BoxFit.cover,
-                  isPost: true,
+              child: ThumbnailImage(
+                imageUrls: imageUrls,
+                index: 2,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(radius!),
                 ),
               ),
             ),
-           const SizedBox(height: 5),
+            const SizedBox(height: 5),
             Expanded(
               flex: 1,
-              child: ClipRRect(
-                child: SmartImage(
-                  imageUrls[2],
-                  fit: BoxFit.cover,
-                  isPost: true,
-                ),
+              child: ThumbnailImage(
+                imageUrls: imageUrls,
+                index: 3,
               ),
             ),
             const SizedBox(height: 5),
@@ -267,32 +245,32 @@ class MultipleImageView extends StatelessWidget {
                 alignment: Alignment.center,
                 fit: StackFit.expand,
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      bottomRight: Radius.circular(20),
-                    ),
-                    child: SmartImage(
-                      imageUrls[3],
-                      fit: BoxFit.cover,
-                      isPost: true,
+                  ThumbnailImage(
+                    imageUrls: imageUrls,
+                    index: 1,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(radius!),
                     ),
                   ),
-                  Positioned.fill(
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        borderRadius: const BorderRadius.only(
-                          bottomRight: Radius.circular(20),
+                  Visibility(
+                    visible: imageUrls.length > maxImages,
+                    child: Positioned.fill(
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.5),
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(radius!),
+                          ),
                         ),
-                      ),
-                      child: Text(
-                        '+${imageUrls.length - 4}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontFamily: "Nulito",
-                          fontWeight: FontWeight.w700,
+                        child: Text(
+                          '+${imageUrls.length - maxImages}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontFamily: "Nulito",
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),

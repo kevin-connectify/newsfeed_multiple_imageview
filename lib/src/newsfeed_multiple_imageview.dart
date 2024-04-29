@@ -2,24 +2,26 @@ library newsfeed_multiple_imageview;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:newsfeed_multiple_imageview/src/multiple_image_view.dart';
 import 'package:newsfeed_multiple_imageview/src/smart_image.dart';
 
-import 'package:newsfeed_multiple_imageview/src/multiple_image_view.dart';
-
 class NewsfeedMultipleImageView extends StatelessWidget {
-
   final List<String> imageUrls;
-  final double marginLeft;
-  final double marginTop;
-  final double marginRight;
-  final double marginBottom;
+  // final double marginLeft;
+  // final double marginTop;
+  // final double marginRight;
+  // final double marginBottom;
+
+  final EdgeInsets margin;
+  final int maxImages = 5;
 
   const NewsfeedMultipleImageView({
     Key? key,
-    this.marginLeft = 0,
-    this.marginTop = 0,
-    this.marginRight = 0,
-    this.marginBottom = 0,
+    // this.marginLeft = 0,
+    // this.marginTop = 0,
+    // this.marginRight = 0,
+    // this.marginBottom = 0,
+    this.margin = const EdgeInsets.all(0),
     required this.imageUrls,
   }) : super(key: key);
 
@@ -29,14 +31,15 @@ class NewsfeedMultipleImageView extends StatelessWidget {
       builder: (context, costraints) => Container(
         width: costraints.maxWidth,
         height: costraints.maxWidth,
-        margin: EdgeInsets.fromLTRB(
-          marginLeft,
-          marginTop,
-          marginRight,
-          marginBottom,
-        ),
+        margin: margin,
+        // margin: EdgeInsets.fromLTRB(
+        //   marginLeft,
+        //   marginTop,
+        //   marginRight,
+        //   marginBottom,
+        // ),
         child: GestureDetector(
-          child: MultipleImageView(imageUrls: imageUrls),
+          child: MultipleImageView(imageUrls: imageUrls, maxImages: maxImages),
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
@@ -51,13 +54,15 @@ class NewsfeedMultipleImageView extends StatelessWidget {
 
 class ImageViewer extends StatelessWidget {
   final List<String> imageUrls;
-  const ImageViewer({Key? key,
+  const ImageViewer({
+    Key? key,
     required this.imageUrls,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(
+    return Scaffold(
+        body: SafeArea(
       bottom: false,
       child: Container(
         // width: MediaQuery.of(context).size.width,
@@ -89,13 +94,13 @@ class ImageViewer extends StatelessWidget {
                   children: imageUrls
                       .map(
                         (e) => ClipRect(
-                      child: SmartImage(
-                        e,
-                        fit: BoxFit.contain,
-                        isPost: true,
-                      ),
-                    ),
-                  )
+                          child: SmartImage(
+                            e,
+                            fit: BoxFit.contain,
+                            isPost: true,
+                          ),
+                        ),
+                      )
                       .toList(),
                 ),
               ),
@@ -106,5 +111,3 @@ class ImageViewer extends StatelessWidget {
     ));
   }
 }
-
-
