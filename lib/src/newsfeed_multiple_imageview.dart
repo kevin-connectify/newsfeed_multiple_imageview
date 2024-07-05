@@ -1,5 +1,6 @@
 library newsfeed_multiple_imageview;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:newsfeed_multiple_imageview/src/multiple_image_view.dart';
@@ -7,24 +8,15 @@ import 'package:newsfeed_multiple_imageview/src/smart_image.dart';
 
 class NewsfeedMultipleImageView extends StatelessWidget {
   final List<String> imageUrls;
-  // final double marginLeft;
-  // final double marginTop;
-  // final double marginRight;
-  // final double marginBottom;
 
   final EdgeInsets margin;
   final int maxImages = 5;
 
   const NewsfeedMultipleImageView({
     Key? key,
-    // this.marginLeft = 0,
-    // this.marginTop = 0,
-    // this.marginRight = 0,
-    // this.marginBottom = 0,
     this.margin = const EdgeInsets.all(0),
     required this.imageUrls,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -32,33 +24,43 @@ class NewsfeedMultipleImageView extends StatelessWidget {
         width: costraints.maxWidth,
         height: costraints.maxWidth,
         margin: margin,
-        // margin: EdgeInsets.fromLTRB(
-        //   marginLeft,
-        //   marginTop,
-        //   marginRight,
-        //   marginBottom,
-        // ),
         child: GestureDetector(
           child: MultipleImageView(imageUrls: imageUrls, maxImages: maxImages),
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ImageViewer(imageUrls: imageUrls),
-            ),
-          ),
+          onTap: () {
+            if (kDebugMode) {
+              print(
+                  "Max Images: $maxImages / Image Urls Count: ${imageUrls.length}");
+            }
+            int _index = maxImages - 1;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ImageViewer(imageUrls: imageUrls, index: _index),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 }
 
-class ImageViewer extends StatelessWidget {
+class ImageViewer extends StatefulWidget {
   final List<String> imageUrls;
+  final int index;
+
   const ImageViewer({
     Key? key,
     required this.imageUrls,
+    required this.index,
   }) : super(key: key);
 
+  @override
+  State<ImageViewer> createState() => _ImageViewerState();
+}
+
+class _ImageViewerState extends State<ImageViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,11 +89,11 @@ class ImageViewer extends StatelessWidget {
               ),
               Expanded(
                 child: ImageSlideshow(
-                  initialPage: 0,
+                  initialPage: widget.index,
                   indicatorColor: Colors.red,
                   indicatorBackgroundColor: Colors.grey,
-                  isLoop: imageUrls.length > 1,
-                  children: imageUrls
+                  isLoop: widget.imageUrls.length > 1,
+                  children: widget.imageUrls
                       .map(
                         (e) => ClipRect(
                           child: SmartImage(
