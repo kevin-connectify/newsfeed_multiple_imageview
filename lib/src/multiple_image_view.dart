@@ -4,7 +4,7 @@ import 'package:newsfeed_multiple_imageview/src/thumbnail_image.dart';
 class MultipleImageView extends StatelessWidget {
   final List<String> imageUrls;
   final int maxImages;
-  final double? radius = 20.0;
+  final double? radius = 0.0;
 
   const MultipleImageView({
     super.key,
@@ -34,7 +34,7 @@ class MultipleImageView extends StatelessWidget {
         return _threeImageView();
 
       case 4:
-        return _foureImageView();
+        return _fourImageView();
       // case 5:
       //   return _fiveImageView();
       default:
@@ -130,7 +130,7 @@ class MultipleImageView extends StatelessWidget {
     ];
   }
 
-  List<Widget> _foureImageView() {
+  List<Widget> _fourImageView() {
     return [
       Expanded(
         flex: 2,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newsfeed_multiple_imageview/newsfeed_multiple_imageview.dart';
 import 'package:newsfeed_multiple_imageview/src/smart_image.dart';
 
 class ThumbnailImage extends StatelessWidget {
@@ -14,12 +15,23 @@ class ThumbnailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: borderRadius ?? BorderRadius.circular(0),
-      child: SmartImage(
-        imageUrls[index],
-        fit: BoxFit.cover,
-        isPost: true,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ImageViewer(imageUrls: imageUrls, index: index),
+          ),
+        );
+      },
+      child: ClipRRect(
+        borderRadius: borderRadius ?? BorderRadius.circular(0),
+        child: SmartImage(
+          imageUrls[index],
+          fit: BoxFit.cover,
+          isPost: true,
+        ),
       ),
     );
   }
